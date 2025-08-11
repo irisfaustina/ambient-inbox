@@ -1,5 +1,7 @@
 # Agent Inbox
 
+Test message
+
 ![Agent Inbox Screenshot](./public/inbox_screenshot.png)
 
 > [!NOTE]
