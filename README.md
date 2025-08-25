@@ -1,6 +1,6 @@
 # Agent Inbox
 
-Test message
+TODO: Feature to set up backend for Gmail, feature to chat
 
 ![Agent Inbox Screenshot](./public/inbox_screenshot.png)
 
