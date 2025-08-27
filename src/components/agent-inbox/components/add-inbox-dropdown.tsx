@@ -32,9 +32,9 @@ export function AddInboxDropdown({
       selected: inbox.selected!,
       createdAt: inbox.createdAt!,
     };
-    
+
     addAgentInbox(fullInbox);
-    
+
     // Force page reload to ensure the new inbox appears
     window.location.reload();
   };
@@ -58,7 +58,7 @@ export function AddInboxDropdown({
             <span>LangGraph Agent</span>
           </DropdownMenuItem>
         </AddAgentInboxDialog>
-        
+
         <GmailAuthDialog onSuccess={handleGmailSuccess}>
           <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
             <Mail className="mr-2 h-4 w-4" />

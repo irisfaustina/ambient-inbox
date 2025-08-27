@@ -79,7 +79,7 @@ export function AppSidebar() {
                   const label = item.name || prettifyText(item.graphId);
                   const isDeployed = isDeployedUrl(item.deploymentUrl);
                   const isGmail = item.inboxType === "gmail-fastapi";
-                  
+
                   return (
                     <SidebarMenuItem
                       key={`graph-id-${item.graphId}-${idx}`}
@@ -112,7 +112,12 @@ export function AppSidebar() {
                             </SidebarMenuButton>
                           </TooltipTrigger>
                           <TooltipContent>
-                            {label} - {isGmail ? "Gmail" : isDeployed ? "Deployed" : "Local"}
+                            {label} -{" "}
+                            {isGmail
+                              ? "Gmail"
+                              : isDeployed
+                                ? "Deployed"
+                                : "Local"}
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>

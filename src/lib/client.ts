@@ -6,7 +6,11 @@ export interface GmailFastAPIClient {
   type: "gmail-fastapi";
   baseUrl: string;
   registerUser: (email: string, gmailToken: string) => Promise<any>;
-  processEmail: (email: string, emailData?: any, autoFetch?: boolean) => Promise<any>;
+  processEmail: (
+    email: string,
+    emailData?: any,
+    autoFetch?: boolean
+  ) => Promise<any>;
   listUsers: () => Promise<any>;
   getUserStatus: (email: string) => Promise<any>;
   removeUser: (email: string) => Promise<any>;
@@ -32,7 +36,7 @@ export const createClient = ({
   if (clientType === "gmail-fastapi") {
     return createGmailFastAPIClient(deploymentUrl);
   }
-  
+
   return {
     type: "langgraph",
     client: new Client({
@@ -44,7 +48,9 @@ export const createClient = ({
   };
 };
 
-export const createGmailFastAPIClient = (baseUrl: string): GmailFastAPIClient => {
+export const createGmailFastAPIClient = (
+  baseUrl: string
+): GmailFastAPIClient => {
   const apiCall = async (endpoint: string, options: RequestInit = {}) => {
     const response = await fetch(`${baseUrl}${endpoint}`, {
       headers: {
@@ -53,11 +59,13 @@ export const createGmailFastAPIClient = (baseUrl: string): GmailFastAPIClient =>
       },
       ...options,
     });
-    
+
     if (!response.ok) {
-      throw new Error(`API call failed: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `API call failed: ${response.status} ${response.statusText}`
+      );
     }
-    
+
     return response.json();
   };
 
@@ -73,7 +81,11 @@ export const createGmailFastAPIClient = (baseUrl: string): GmailFastAPIClient =>
         }),
       });
     },
-    processEmail: async (email: string, emailData?: any, autoFetch: boolean = true) => {
+    processEmail: async (
+      email: string,
+      emailData?: any,
+      autoFetch: boolean = true
+    ) => {
       return apiCall("/process-email", {
         method: "POST",
         body: JSON.stringify({

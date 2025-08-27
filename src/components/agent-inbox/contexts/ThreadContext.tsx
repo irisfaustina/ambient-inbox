@@ -83,7 +83,7 @@ const getClient = ({ agentInboxes, getItem, toast }: GetClientArgs) => {
     });
     return;
   }
-  
+
   const selectedInbox = agentInboxes.find((i) => i.selected);
   if (!selectedInbox) {
     toast({
@@ -109,10 +109,10 @@ const getClient = ({ agentInboxes, getItem, toast }: GetClientArgs) => {
 
   // Handle Gmail FastAPI inboxes
   if (selectedInbox.inboxType === "gmail-fastapi") {
-    return createClient({ 
-      deploymentUrl, 
+    return createClient({
+      deploymentUrl,
       langchainApiKey: undefined,
-      clientType: "gmail-fastapi"
+      clientType: "gmail-fastapi",
     });
   }
 
@@ -131,10 +131,10 @@ const getClient = ({ agentInboxes, getItem, toast }: GetClientArgs) => {
     return;
   }
 
-  return createClient({ 
-    deploymentUrl, 
+  return createClient({
+    deploymentUrl,
     langchainApiKey: langchainApiKeyLS,
-    clientType: "langgraph"
+    clientType: "langgraph",
   });
 };
 
@@ -225,11 +225,27 @@ export function ThreadsProvider<
         }
 
         // Handle Gmail inboxes differently
-        if (selectedInbox.inboxType === "gmail-fastapi" && client.type === "gmail-fastapi") {
-          logger.log("Fetching Gmail threads for:", selectedInbox.gmailConfig?.emailAddress);
+        if (
+          selectedInbox.inboxType === "gmail-fastapi" &&
+          client.type === "gmail-fastapi"
+        ) {
+          logger.log(
+            "Fetching Gmail threads for:",
+            selectedInbox.gmailConfig?.emailAddress
+          );
           try {
-            const gmailThreads = await fetchGmailThreads<ThreadValues>(client, selectedInbox, inbox, limit, offset);
-            logger.log("Gmail threads fetched:", gmailThreads.length, "threads");
+            const gmailThreads = await fetchGmailThreads<ThreadValues>(
+              client,
+              selectedInbox,
+              inbox,
+              limit,
+              offset
+            );
+            logger.log(
+              "Gmail threads fetched:",
+              gmailThreads.length,
+              "threads"
+            );
             setThreadData(gmailThreads);
             setHasMoreThreads(gmailThreads.length === limit);
           } catch (error) {
@@ -294,11 +310,13 @@ export function ThreadsProvider<
                 // Only if necessary, do the more expensive thread state fetch
                 try {
                   // Attempt to get interrupts from state only if necessary
-                  const threadInterrupts = getInterruptFromThread(currentThread);
+                  const threadInterrupts =
+                    getInterruptFromThread(currentThread);
                   if (!threadInterrupts || threadInterrupts.length === 0) {
-                    const state = await client.client.threads.getState<ThreadValues>(
-                      currentThread.thread_id
-                    );
+                    const state =
+                      await client.client.threads.getState<ThreadValues>(
+                        currentThread.thread_id
+                      );
 
                     return processThreadWithoutInterrupts(currentThread, {
                       thread_id: currentThread.thread_id,
@@ -434,7 +452,7 @@ export function ThreadsProvider<
           invalidSchema: undefined,
         };
       }
-      
+
       return undefined;
     },
     [agentInboxes, getItem, getSearchParam]
