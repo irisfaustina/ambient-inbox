@@ -174,5 +174,17 @@ export interface AgentInbox {
    * The tenant ID for the deployment (only for deployed graphs).
    */
   tenantId?: string;
+  /**
+   * The type of inbox - determines how to connect to the agent.
+   */
+  inboxType?: "langgraph" | "gmail-fastapi";
+  /**
+   * Gmail-specific configuration (only for gmail-fastapi type).
+   */
+  gmailConfig?: {
+    emailAddress: string;
+    gmailToken?: string;
+    isAuthenticated: boolean;
+  };
   createdAt: string;
 }

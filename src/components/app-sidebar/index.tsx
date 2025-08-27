@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { FileText, UploadCloud, House } from "lucide-react";
+import { FileText, UploadCloud, House, Mail } from "lucide-react";
 import { agentInboxSvg } from "../agent-inbox/components/agent-inbox-logo";
 import { SettingsPopover } from "../agent-inbox/components/settings-popover";
 import { PillButton } from "../ui/pill-button";
@@ -30,7 +30,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { AddAgentInboxDialog } from "../agent-inbox/components/add-agent-inbox-dialog";
+import { AddInboxDropdown } from "../agent-inbox/components/add-inbox-dropdown";
 import { useLocalStorage } from "../agent-inbox/hooks/use-local-storage";
 import { DropdownDialogMenu } from "../agent-inbox/components/dropdown-and-dialog";
 
@@ -78,6 +78,8 @@ export function AppSidebar() {
                 {agentInboxes.map((item, idx) => {
                   const label = item.name || prettifyText(item.graphId);
                   const isDeployed = isDeployedUrl(item.deploymentUrl);
+                  const isGmail = item.inboxType === "gmail-fastapi";
+                  
                   return (
                     <SidebarMenuItem
                       key={`graph-id-${item.graphId}-${idx}`}
@@ -92,7 +94,9 @@ export function AppSidebar() {
                             <SidebarMenuButton
                               onClick={() => changeAgentInbox(item.id, true)}
                             >
-                              {isDeployed ? (
+                              {isGmail ? (
+                                <Mail className="w-5 h-5 text-red-500" />
+                              ) : isDeployed ? (
                                 <UploadCloud className="w-5 h-5 text-blue-500" />
                               ) : (
                                 <House className="w-5 h-5 text-green-500" />
@@ -108,7 +112,7 @@ export function AppSidebar() {
                             </SidebarMenuButton>
                           </TooltipTrigger>
                           <TooltipContent>
-                            {label} - {isDeployed ? "Deployed" : "Local"}
+                            {label} - {isGmail ? "Gmail" : isDeployed ? "Deployed" : "Local"}
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
@@ -120,8 +124,7 @@ export function AppSidebar() {
                     </SidebarMenuItem>
                   );
                 })}
-                <AddAgentInboxDialog
-                  hideTrigger={false}
+                <AddInboxDropdown
                   langchainApiKey={langchainApiKey}
                   handleChangeLangChainApiKey={handleChangeLangChainApiKey}
                 />
