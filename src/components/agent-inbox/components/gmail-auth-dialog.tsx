@@ -23,10 +23,10 @@ interface GmailAuthDialogProps {
   gmailApiUrl?: string;
 }
 
-export function GmailAuthDialog({ 
-  children, 
+export function GmailAuthDialog({
+  children,
   onSuccess,
-  gmailApiUrl = "http://localhost:8001"
+  gmailApiUrl = "http://localhost:8001",
 }: GmailAuthDialogProps) {
   const [open, setOpen] = useState(false);
   const [emailAddress, setEmailAddress] = useState("");
@@ -35,7 +35,7 @@ export function GmailAuthDialog({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!emailAddress || !gmailToken) {
       toast({
         title: "Missing Information",
@@ -46,15 +46,15 @@ export function GmailAuthDialog({
     }
 
     setIsSubmitting(true);
-    
+
     try {
       // Create client and register user
       const client = createGmailFastAPIClient(gmailApiUrl);
       await client.registerUser(emailAddress, gmailToken);
-      
+
       // Check health to ensure connection works
       await client.healthCheck();
-      
+
       // Create inbox configuration
       const newInbox: Partial<AgentInbox> = {
         id: `gmail-${emailAddress}-${Date.now()}`,
@@ -75,17 +75,19 @@ export function GmailAuthDialog({
       setOpen(false);
       setEmailAddress("");
       setGmailToken("");
-      
+
       toast({
         title: "Gmail Account Connected",
         description: `Successfully connected ${emailAddress} to your Gmail assistant.`,
       });
-      
     } catch (error) {
       console.error("Gmail authentication failed:", error);
       toast({
         title: "Connection Failed",
-        description: error instanceof Error ? error.message : "Failed to connect to Gmail assistant.",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to connect to Gmail assistant.",
         variant: "destructive",
       });
     } finally {
@@ -95,14 +97,13 @@ export function GmailAuthDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Connect Gmail Account</DialogTitle>
           <DialogDescription>
-            Connect your Gmail account to enable email processing with your personal Gmail assistant.
+            Connect your Gmail account to enable email processing with your
+            personal Gmail assistant.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
@@ -137,10 +138,10 @@ export function GmailAuthDialog({
             </div>
             <div className="text-sm text-muted-foreground">
               <p>
-                You need a Gmail API token to connect your account. 
-                <a 
-                  href="https://developers.google.com/gmail/api/quickstart" 
-                  target="_blank" 
+                You need a Gmail API token to connect your account.
+                <a
+                  href="https://developers.google.com/gmail/api/quickstart"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:text-blue-800 underline ml-1"
                 >
